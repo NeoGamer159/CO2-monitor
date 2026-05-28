@@ -2,6 +2,8 @@
 #include "esp_timer.h"
 #include "mhz19.h"
 
+#define CALIBRATE_ON_BOOT 0 
+
 void app_main(void)
 {
     mhz19_init(MHZ19_UART_NUM);
