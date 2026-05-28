@@ -1,0 +1,3 @@
+[submodule "components/esp-idf-components"]
+	path = components/esp-idf-components
+	url = https://github.com/NeoGamer159/esp-idf-components.git
