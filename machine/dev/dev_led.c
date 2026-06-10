@@ -13,6 +13,10 @@ void dev_led_set_mode(led_mode_t mode) {
     current_mode = mode;
 }
 
+void dev_led_taskHandler(void) {
+    dev_led_run();
+}
+
 void dev_led_run(void) {
     tick++;
 

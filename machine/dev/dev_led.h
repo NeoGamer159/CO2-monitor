@@ -10,3 +10,4 @@ typedef enum {
 void dev_led_init(void);
 void dev_led_set_mode(led_mode_t mode);
 void dev_led_run(void);
+void dev_led_taskHandler(void);

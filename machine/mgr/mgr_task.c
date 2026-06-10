@@ -2,6 +2,7 @@
 #include "mgr_task.h"
 #include "dev_led.h"
 #include "app_msm.h"
+#include "app_hmi.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -16,6 +17,8 @@ typedef struct {
 
 static task_entry_t task_table[] = {
     { "app_msm_taskHandler", app_msm_taskHandler, 10, 0 },
+    { "app_hmi_taskHandler", app_hmi_taskHandler, 50, 0 },
+    {"app_led_taskHandler", dev_led_taskHandler, 100, 0 },
 };
 
 void mgr_task_init(void) {
