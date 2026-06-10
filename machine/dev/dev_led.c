@@ -1,9 +1,9 @@
 #include "dev_led.h"
 #include "drv_led.h"
 #include <stdint.h>
+#include "freertos/FreeRTOS.h"
 
 static led_mode_t current_mode = LED_MODE_OFF;
-static uint32_t tick = 0;
 
 void dev_led_init(void) {
     drv_led_init();
@@ -18,7 +18,7 @@ void dev_led_taskHandler(void) {
 }
 
 void dev_led_run(void) {
-    tick++;
+    uint32_t now = xTaskGetTickCount() * portTICK_PERIOD_MS;
 
     switch(current_mode) {
         case LED_MODE_OFF:
@@ -28,10 +28,10 @@ void dev_led_run(void) {
             drv_led_set(true);
             break;
         case LED_MODE_BLINK_SLOW:
-            drv_led_set((tick % 40) < 2);
+            drv_led_set((now % 2000) < 100);
             break;
         case LED_MODE_BLINK_FAST:
-            drv_led_set((tick % 4) < 2);
+            drv_led_set((now % 200) < 100);
             break;
     }
 }
