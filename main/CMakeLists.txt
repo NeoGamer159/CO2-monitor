@@ -9,10 +9,12 @@ idf_component_register(
         "../machine/dev/dev_co2.c"
         "../machine/dev/dev_led.c"
         "../machine/drv/drv_led.c"
+        "../machine/ssf/ssf_scheduler.c"
     INCLUDE_DIRS
         "."
         "../machine/mgr"
         "../machine/app"
         "../machine/dev"
         "../machine/drv"
+        "../machine/ssf"
 )

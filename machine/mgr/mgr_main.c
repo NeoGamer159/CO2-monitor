@@ -9,10 +9,10 @@
 void mgr_main(void) {
     app_msm_init();
     app_hmi_init();
-    mgr_task_init();
+    ssf_scheduler_init(mgr_task_table, mgr_task_count);
 
     while (1) {
-        mgr_task_run();
-        vTaskDelay(pdMS_TO_TICKS(10));
+        ssf_scheduler_tick();
+        vTaskDelay(1);
     }
 }

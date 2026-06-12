@@ -1,4 +1,6 @@
 #pragma once
 
-void mgr_task_init(void);
-void mgr_task_run(void);
+#include "ssf_scheduler.h"
+
+extern ssf_task_t mgr_task_table[];
+extern const uint32_t mgr_task_count;
