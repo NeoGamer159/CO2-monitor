@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "app_msm.h"
 #include "esp_log.h"
+#include "dev_nvs.h"
 
 typedef enum {
     MSM_LOCAL_STATE_ENTRY,
@@ -67,7 +68,33 @@ static void msm_handler_init(app_msm_args_t *args) {
 static void msm_handler_wifi(app_msm_args_t *args) {
     switch(args->localState) {
         case MSM_LOCAL_STATE_ENTRY:
+            // DEVEL TODO: delete this, only for testing
             ESP_LOGI("MSM", "WIFI - ENTRY");
+
+            dev_nvs_data_t nvs_data = {0};
+            dev_nvs_getData(&nvs_data);
+
+            if(nvs_data.ssid[0] == '\0') {
+                current_state = APP_MSM_STATE_AP_CONFIG;
+                args->localState = MSM_LOCAL_STATE_EXIT;
+            } else {
+                args->localState = MSM_LOCAL_STATE_RUN;
+                /* fall through */
+            }
+            ESP_LOGI("MSM", "SSID: '%s'", nvs_data.ssid);
+        case MSM_LOCAL_STATE_RUN:
+            break;
+        case MSM_LOCAL_STATE_EXIT:
+            ESP_LOGI("MSM", "WIFI - EXIT, next state: %d", current_state);
+            args->localState = MSM_LOCAL_STATE_ENTRY;
+            break;
+    }
+}
+
+static void msm_handler_ap_config(app_msm_args_t *args) {
+    switch(args->localState) {
+        case MSM_LOCAL_STATE_ENTRY:
+            ESP_LOGI("MSM", "AP_CONFIG - ENTRY");
             args->localState = MSM_LOCAL_STATE_RUN;
             /* fall through */
         case MSM_LOCAL_STATE_RUN:
@@ -76,10 +103,6 @@ static void msm_handler_wifi(app_msm_args_t *args) {
             args->localState = MSM_LOCAL_STATE_ENTRY;
             break;
     }
-}
-
-static void msm_handler_ap_config(app_msm_args_t *args) {
-
 }
 
 static void msm_handler_error(app_msm_args_t *args) {

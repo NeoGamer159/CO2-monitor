@@ -10,6 +10,7 @@ idf_component_register(
         "../machine/dev/dev_led.c"
         "../machine/drv/drv_led.c"
         "../machine/ssf/ssf_scheduler.c"
+        "../machine/dev/dev_nvs.c"
     INCLUDE_DIRS
         "."
         "../machine/mgr"
@@ -17,4 +18,5 @@ idf_component_register(
         "../machine/dev"
         "../machine/drv"
         "../machine/ssf"
+        "../machine/dev"
 )
