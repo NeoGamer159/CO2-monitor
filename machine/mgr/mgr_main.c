@@ -4,6 +4,7 @@
 #include "app_hmi.h"
 #include "dev_led.h"
 #include "dev_nvs.h"
+#include "dev_wifi.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -11,6 +12,7 @@ void mgr_main(void) {
     app_msm_init();
     app_hmi_init();
     dev_nvs_init();
+    dev_wifi_init();
     ssf_scheduler_init(mgr_task_table, mgr_task_count);
 
     while (1) {

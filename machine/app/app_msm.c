@@ -2,6 +2,7 @@
 #include "app_msm.h"
 #include "esp_log.h"
 #include "dev_nvs.h"
+#include "dev_wifi.h"
 
 typedef enum {
     MSM_LOCAL_STATE_ENTRY,
@@ -11,6 +12,7 @@ typedef enum {
 
 typedef struct {
     app_msm_local_state_t localState;
+    dev_nvs_data_t nvs_data;
 } app_msm_args_t;
 
 static void msm_handler_init(app_msm_args_t *args);
@@ -71,20 +73,23 @@ static void msm_handler_wifi(app_msm_args_t *args) {
             // DEVEL TODO: delete this, only for testing
             ESP_LOGI("MSM", "WIFI - ENTRY");
 
-            dev_nvs_data_t nvs_data = {0};
-            dev_nvs_getData(&nvs_data);
+            dev_nvs_getData(&args->nvs_data);
 
-            if(nvs_data.ssid[0] == '\0') {
+            if(args->nvs_data.ssid[0] == '\0') {
                 current_state = APP_MSM_STATE_AP_CONFIG;
                 args->localState = MSM_LOCAL_STATE_EXIT;
             } else {
                 args->localState = MSM_LOCAL_STATE_RUN;
-                /* fall through */
             }
-            ESP_LOGI("MSM", "SSID: '%s'", nvs_data.ssid);
+            ESP_LOGI("MSM", "SSID: '%s'", args->nvs_data.ssid);
+            /* fall through */
         case MSM_LOCAL_STATE_RUN:
+            // DEVEL TODO: delete this, only for testing
+             ESP_LOGI("MSM", "WIFI - RUN");
+             dev_wifi_sta_start(args->nvs_data.ssid, args->nvs_data.password);
             break;
         case MSM_LOCAL_STATE_EXIT:
+            // DEVEL TODO: delete this, only for testing
             ESP_LOGI("MSM", "WIFI - EXIT, next state: %d", current_state);
             args->localState = MSM_LOCAL_STATE_ENTRY;
             break;
@@ -95,9 +100,11 @@ static void msm_handler_ap_config(app_msm_args_t *args) {
     switch(args->localState) {
         case MSM_LOCAL_STATE_ENTRY:
             ESP_LOGI("MSM", "AP_CONFIG - ENTRY");
+            dev_wifi_ap_start();         
             args->localState = MSM_LOCAL_STATE_RUN;
             /* fall through */
         case MSM_LOCAL_STATE_RUN:
+            //ESP_LOGI("MSM", "AP_CONFIG - RUN");
             break;
         case MSM_LOCAL_STATE_EXIT:
             args->localState = MSM_LOCAL_STATE_ENTRY;

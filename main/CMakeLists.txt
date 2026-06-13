@@ -11,6 +11,7 @@ idf_component_register(
         "../machine/drv/drv_led.c"
         "../machine/ssf/ssf_scheduler.c"
         "../machine/dev/dev_nvs.c"
+        "../machine/dev/dev_wifi.c"
     INCLUDE_DIRS
         "."
         "../machine/mgr"

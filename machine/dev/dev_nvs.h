@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include "nvs_flash.h"
+#include "esp_err.h"
 
 typedef struct {
     char ssid[32];
